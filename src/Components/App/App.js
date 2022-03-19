@@ -23,6 +23,7 @@ export class App extends React.Component { // The template had this as
     }
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
+    this.updatePlaylistName = this.updatePlaylistName.bind(this);
   }
 
   render() {
@@ -32,7 +33,7 @@ export class App extends React.Component { // The template had this as
           <SearchBar />
           <div className="App-playlist">
             <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />
-            <Playlist playlistName={this.state.playlistName} onRemove={this.removeTrack} playlistTracks={this.state.playlistTracks} />
+            <Playlist onNameChange={this.updatePlaylistName} playlistName={this.state.playlistName} onRemove={this.removeTrack} playlistTracks={this.state.playlistTracks} />
           </div>
         </div>
     </div>
@@ -54,6 +55,12 @@ export class App extends React.Component { // The template had this as
     this.state.playlistTracks.splice(trackIndex, 1);
     this.setState({
       playlistTracks: this.state.playlistTracks
+    });
+  }
+
+  updatePlaylistName(newName) {
+    this.setState({
+      playlistName: newName
     });
   }
 }
