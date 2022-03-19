@@ -13,17 +13,18 @@ export class App extends React.Component { // The template had this as
       searchResults: [
         {name: 'Baby I Love You', artist: 'Aretha Franklin', album: 'Aretha Arrives', id: '0'},
         {name: 'Natural Woman', artist: 'Aretha Franklin', album: 'Lady Soul', id: '1'},
-        {name: 'Respect', artist: 'Aretha Franklin', album: 'Respect', id: '2'}
+        {name: 'Respect', artist: 'Aretha Franklin', album: 'Respect', id: '2', uri: '789'}
       ],
       playlistName: "Aretha Franklin Greatest Hits",
       playlistTracks: [
-        {name: 'Baby I Love You', artist: 'Aretha Franklin', album: 'Aretha Arrives', id: '0'},
-        {name: 'Natural Woman', artist: 'Aretha Franklin', album: 'Lady Soul', id: '1'}
+        {name: 'Baby I Love You', artist: 'Aretha Franklin', album: 'Aretha Arrives', id: '0', uri: '123'},
+        {name: 'Natural Woman', artist: 'Aretha Franklin', album: 'Lady Soul', id: '1', uri: '456'}
       ]
     }
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
+    this.savePlaylist = this.savePlaylist.bind(this);
   }
 
   render() {
@@ -33,7 +34,7 @@ export class App extends React.Component { // The template had this as
           <SearchBar />
           <div className="App-playlist">
             <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />
-            <Playlist onNameChange={this.updatePlaylistName} playlistName={this.state.playlistName} onRemove={this.removeTrack} playlistTracks={this.state.playlistTracks} />
+            <Playlist onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} playlistName={this.state.playlistName} onRemove={this.removeTrack} playlistTracks={this.state.playlistTracks} />
           </div>
         </div>
     </div>
@@ -62,6 +63,10 @@ export class App extends React.Component { // The template had this as
     this.setState({
       playlistName: newName
     });
+  }
+
+  savePlaylist() {
+    const trackURIs = this.state.playlistTracks.map(track => track.uri);
   }
 }
 
