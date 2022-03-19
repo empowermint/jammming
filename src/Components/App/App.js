@@ -18,10 +18,11 @@ export class App extends React.Component { // The template had this as
       playlistName: "Aretha Franklin Greatest Hits",
       playlistTracks: [
         {name: 'Baby I Love You', artist: 'Aretha Franklin', album: 'Aretha Arrives', id: '0'},
-        {name: 'Natural Woman', artist: 'Aretha Franklin', album: 'Lady Soul', id: '1'},
-        {name: 'Respect', artist: 'Aretha Franklin', album: 'Respect', id: '2'}
+        {name: 'Natural Woman', artist: 'Aretha Franklin', album: 'Lady Soul', id: '1'}
       ]
     }
+    this.addTrack = this.addTrack.bind(this);
+    this.removeTrack = this.removeTrack.bind(this);
   }
 
   render() {
@@ -30,12 +31,30 @@ export class App extends React.Component { // The template had this as
         <h1>Ja<span className="highlight">mmm</span>ing</h1><div className="App">
           <SearchBar />
           <div className="App-playlist">
-            <SearchResults searchResults={this.state.searchResults} />
-            <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} />
+            <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />
+            <Playlist playlistName={this.state.playlistName} onRemove={this.removeTrack} playlistTracks={this.state.playlistTracks} />
           </div>
         </div>
     </div>
     ); //tutorial says to pass this.props.searchResults, which seems wrong?
+  }
+
+  addTrack(track) {
+    const currentIDs = this.state.playlistTracks.map(track => track.id);
+    if (currentIDs.includes(track.id)) return;
+    this.state.playlistTracks.push(track);
+    this.setState({
+      playlistTracks: this.state.playlistTracks
+    });
+  }
+
+  removeTrack(track) {
+    const currentIDs = this.state.playlistTracks.map(track => track.id);
+    const trackIndex = currentIDs.indexOf(track.id);
+    this.state.playlistTracks.splice(trackIndex, 1);
+    this.setState({
+      playlistTracks: this.state.playlistTracks
+    });
   }
 }
 
