@@ -4,7 +4,7 @@ import React from 'react';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { SearchResults } from '../SearchResults/SearchResults';
 import { Playlist } from '../Playlist/Playlist';
-
+import { Spotify } from '../../utl/Spotify';
 
 export class App extends React.Component {
   constructor(props) {
@@ -70,8 +70,11 @@ export class App extends React.Component {
     const trackURIs = this.state.playlistTracks.map(track => track.uri);
   }
 
-  search(searchTerm) {
-    console.log(searchTerm);
+  search(searchTerm) { // Does this need to be an async function?
+    const results = Spotify.search(searchTerm);
+    this.setState({
+      searchResults: results
+    })
   }
 }
 
