@@ -6,7 +6,7 @@ import { SearchResults } from '../SearchResults/SearchResults';
 import { Playlist } from '../Playlist/Playlist';
 
 
-export class App extends React.Component { // The template had this as 
+export class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { // Temporary hard-coded values
@@ -25,13 +25,14 @@ export class App extends React.Component { // The template had this as
     this.removeTrack = this.removeTrack.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
+    this.search = this.search.bind(this);
   }
 
   render() {
     return (
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing</h1><div className="App">
-          <SearchBar />
+          <SearchBar onSearch={this.search} />
           <div className="App-playlist">
             <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />
             <Playlist onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} playlistName={this.state.playlistName} onRemove={this.removeTrack} playlistTracks={this.state.playlistTracks} />
@@ -67,6 +68,10 @@ export class App extends React.Component { // The template had this as
 
   savePlaylist() {
     const trackURIs = this.state.playlistTracks.map(track => track.uri);
+  }
+
+  search(searchTerm) {
+    console.log(searchTerm);
   }
 }
 
