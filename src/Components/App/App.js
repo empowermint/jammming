@@ -29,6 +29,7 @@ export class App extends React.Component {
   }
 
   render() {
+    Spotify.getAccessToken();
     return (
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing</h1><div className="App">
@@ -39,7 +40,7 @@ export class App extends React.Component {
           </div>
         </div>
     </div>
-    ); //tutorial says to pass this.props.searchResults, which seems wrong?
+    );
   }
 
   addTrack(track) {

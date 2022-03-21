@@ -1,17 +1,30 @@
-export const Spotify = {
-  clientId: 'e07ad3983f784dffa4ee25476f4bd245',
+const Spotify = {
+  clientId: 'e07ad3983f784dffa4ee25476f4bd245', // The OAuth method does not require a secret key
   redirectUri: 'http://localhost:3000/',
   userAccessToken: '',
-  headers: `Authorization: Bearer ${this.getAccessToken}`,
+  // headers: `Authorization: Bearer ${this.getAccessToken()}`,
   userId: '',
   playlistId: '',
 
   getAccessToken() {
     if (this.userAccessToken) return this.userAccessToken;
+
+    // if (window.location.href.match(/state=(\d+)/)[1] === sessionStorage.urlState) {
+    //   this.accessToken = window.location.href.match(/access_token=([^&]+)/)[1];
+    //   this.tokenExpiry = window.location.href.match(/expires_in=([^&]+)/)[1];
+    //   const tokenExpiryDate = Date.now() + (this.tokenExpiry * 1000);
+    //   window.history.pushState('AccessToken', null, '/');
+    //   setTimeout(() => (this.accessToken = ''), tokenExpiryDate - Date.now());
+    // }
     
     const url = window.location.href;
     this.userAccessToken = url.match(/access_token=([^&]*)/);
     const expirationTime = url.match(/expires_in=([^&]*)/);
+    
+    console.info('UAT:\n' + this.userAccessToken + '\nExp:\n' + expirationTime);
+
+    console.log(expirationTime * 2);
+    
     if (this.userAccessToken && expirationTime) {
       window.setTimeout(() => this.userAccessToken = '', expirationTime * 1000);
       window.history.pushState('Access Token', null, '/');
@@ -22,7 +35,10 @@ export const Spotify = {
 
   async search(searchTerm) {
     try {
-      const response = await fetch(`https://api.spotify.com/v1/search?type=track&q=${searchTerm}`, {headers: this.headers});
+      const url = `https://api.spotify.com/v1/search?type=track&q=${searchTerm}`;
+      const response = await fetch(url,
+        { "Authorization": `Bearer ${this.userAccessToken()}` }
+      );
       if (response.ok) {
         const jsonResponse = await response.json();
         if (!jsonResponse || jsonResponse === []) return [];
@@ -37,7 +53,7 @@ export const Spotify = {
         });
       }
     } catch(error) {
-      console.error(error);
+      console.error('Spotify.search() ' + error);
     }
   },
 
@@ -87,3 +103,5 @@ export const Spotify = {
     
   }
 }
+
+export { Spotify };
